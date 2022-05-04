@@ -1,0 +1,25 @@
+{
+  "name": "chimackswapv2",
+  "version": "1.0.0",
+  "description": "유니스왑 V2 클레이튼에서 클론코딩",
+  "main": "truffle-config.js",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/JJakDDo/chimackswapV2.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/JJakDDo/chimackswapV2/issues"
+  },
+  "homepage": "https://github.com/JJakDDo/chimackswapV2#readme",
+  "dependencies": {
+    "@klaytn/contracts": "^0.9.0"
+  }
+}
