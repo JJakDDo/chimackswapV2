@@ -20,6 +20,7 @@
   },
   "homepage": "https://github.com/JJakDDo/chimackswapV2#readme",
   "dependencies": {
-    "@klaytn/contracts": "^0.9.0"
+    "@klaytn/contracts": "^0.9.0",
+    "@openzeppelin/contracts": "^4.6.0"
   }
 }
