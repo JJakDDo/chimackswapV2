@@ -31,6 +31,11 @@ contract ChimackswapV2Pair is KIP7Token, Math, SafeMath{
   }
   
   constructor(address _token0, address _token1) KIP7Token("ChimackswapV2 Pair", "CHIMACKV2", 18, 0) public{
+  }
+
+  function initialize(address _token0, address _token1) public{
+    if(token0 != address(0) || token1 != address(0)) revert("Already Initialized");
+
     token0 = _token0;
     token1 = _token1;
   }
@@ -39,14 +44,12 @@ contract ChimackswapV2Pair is KIP7Token, Math, SafeMath{
     return (reserve0, reserve1, 0);
   }
 
-  function mint() public lock {
+  function mint(address to) public lock returns (uint256 liquidity) {
     (uint112 _reserve0, uint112 _reserve1, ) = getReserves();
     uint256 balance0 = IKIP7(token0).balanceOf(address(this));
     uint256 balance1 = IKIP7(token1).balanceOf(address(this));
     uint256 amount0 = balance0.sub(_reserve0);
     uint256 amount1 = balance1.sub(_reserve1);
-
-    uint256 liquidity;
 
     if(totalSupply() == 0){
       liquidity = Math.sqrt(amount0.mul(amount1)).sub(MINIMUM_LIQUIDITY);
@@ -60,7 +63,9 @@ contract ChimackswapV2Pair is KIP7Token, Math, SafeMath{
 
     require(liquidity > 0);
     
-    _mint(msg.sender, liquidity);
+    _mint(to, liquidity);
+
+    _update(balance0, balance1, _reserve0, _reserve1);
 
   }
   
