@@ -69,25 +69,27 @@ contract ChimackswapV2Pair is KIP7Token, Math, SafeMath{
 
   }
   
-  function burn() public lock{
+  function burn(address to) public lock returns (uint256 amount0, uint256 amount1){
     uint256 balance0 = IKIP7(token0).balanceOf(address(this));
     uint256 balance1 = IKIP7(token1).balanceOf(address(this));
-    uint256 liquidity = balanceOf(msg.sender);
+    uint256 liquidity = balanceOf(address(this));
 
-    uint256 amount0 = (liquidity.mul(balance0)).div(totalSupply());
-    uint256 amount1 = (liquidity.mul(balance1)).div(totalSupply());
+    amount0 = (liquidity.mul(balance0)).div(totalSupply());
+    amount1 = (liquidity.mul(balance1)).div(totalSupply());
 
     require(amount > 0 && amount1 > 0, "Insufficient liquidity burned");
 
-    _burn(msg.sender, liquidity);
+    _burn(addres(this), liquidity);
 
-    _safeTransfer(token0, msg.sender, amount0);
-    _safeTrasnfer(token1, msg.sender, amount1);
+    _safeTransfer(token0, to, amount0);
+    _safeTrasnfer(token1, to, amount1);
 
     balance0 = IKIP7(token0).balanceOf(address(this));
     balance1 = IKIP7(token1).balanceOf(address(this));
 
-    _update(balance0, balance1);
+    (uint112 reserv0_, uint112 reserve1_, ) = getReserves();
+
+    _update(balance0, balance1, reserve0_, reserve1_);
   }
 
   function swap(
